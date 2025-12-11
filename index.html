@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cyril Sokolov | Test Portfolio</title>
 
-    <!-- React + ReactDOM -->
+    <!-- React + ReactDOM (dev builds so we see nice errors) -->
     <script
       crossorigin
       src="https://unpkg.com/react@18/umd/react.development.js"
@@ -18,7 +18,7 @@
     <!-- Babel for JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <!-- Tailwind (optional but you had it) -->
+    <!-- Tailwind (optional, safe to keep since you already had it) -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
@@ -31,24 +31,27 @@
   <body class="bg-slate-900 text-slate-100">
     <div id="root"></div>
 
-    <!-- TEMP TEST COMPONENT -->
+    <!-- EVERYTHING HAPPENS IN THIS ONE SCRIPT -->
     <script type="text/babel">
+      // ✅ This DEFINES SokoGenPortfolio
       function SokoGenPortfolio() {
         return (
           <main className="min-h-screen flex items-center justify-center">
             <div className="text-center space-y-4">
-              <h1 className="text-4xl font-bold">Temporary test portfolio</h1>
+              <h1 className="text-4xl font-bold">
+                Temporary test portfolio is working 🎉
+              </h1>
               <p className="text-lg text-slate-300">
-                If you can see this, React + Babel + GitHub Pages are working.
+                If you can see this, React + Babel + GitHub Pages are all set.
               </p>
             </div>
           </main>
         );
       }
 
+      // ✅ This uses the function we just defined
       const root = ReactDOM.createRoot(document.getElementById("root"));
       root.render(<SokoGenPortfolio />);
     </script>
   </body>
 </html>
-
