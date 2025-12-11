@@ -2,10 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cyril Sokolov | Test Portfolio</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <meta
+      name="description"
+      content="Cyril Sokolov - Creative Technology & Design Portfolio"
+    />
+    <title>Cyril Sokolov | SokoGen Portfolio</title>
 
-    <!-- React + ReactDOM (dev builds so we see nice errors) -->
+    <!-- React + ReactDOM (dev versions so errors are helpful) -->
     <script
       crossorigin
       src="https://unpkg.com/react@18/umd/react.development.js"
@@ -18,40 +25,687 @@
     <!-- Babel for JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <!-- Tailwind (optional, safe to keep since you already had it) -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
       body {
         margin: 0;
         padding: 0;
+        overflow-x: hidden;
+        background-color: #111827;
       }
     </style>
   </head>
-  <body class="bg-slate-900 text-slate-100">
+  <body class="bg-gray-900 text-white">
     <div id="root"></div>
 
-    <!-- EVERYTHING HAPPENS IN THIS ONE SCRIPT -->
     <script type="text/babel">
-      // ✅ This DEFINES SokoGenPortfolio
-      function SokoGenPortfolio() {
-        return (
-          <main className="min-h-screen flex items-center justify-center">
-            <div className="text-center space-y-4">
-              <h1 className="text-4xl font-bold">
-                Temporary test portfolio is working 🎉
-              </h1>
-              <p className="text-lg text-slate-300">
-                If you can see this, React + Babel + GitHub Pages are all set.
-              </p>
-            </div>
-          </main>
-        );
-      }
+      const { useState } = React;
 
-      // ✅ This uses the function we just defined
-      const root = ReactDOM.createRoot(document.getElementById("root"));
-      root.render(<SokoGenPortfolio />);
+      /* Simple icon components to replace lucide-react */
+
+      const Menu = ({ size = 20 }) => (
+        <span style={{ fontSize: size, lineHeight: 1 }}>☰</span>
+      );
+
+      const X = ({ size = 20 }) => (
+        <span style={{ fontSize: size, lineHeight: 1 }}>✕</span>
+      );
+
+      const Mail = ({ size = 20 }) => (
+        <span style={{ fontSize: size, lineHeight: 1 }}>✉️</span>
+      );
+
+      const Linkedin = ({ size = 20 }) => (
+        <span style={{ fontSize: size, lineHeight: 1 }}>in</span>
+      );
+
+      const Github = ({ size = 20 }) => (
+        <span style={{ fontSize: size, lineHeight: 1 }}>🐙</span>
+      );
+
+      const ExternalLink = ({ size = 16 }) => (
+        <span style={{ fontSize: size, lineHeight: 1 }}>↗</span>
+      );
+
+      const Phone = ({ size = 20 }) => (
+        <span style={{ fontSize: size, lineHeight: 1 }}>📞</span>
+      );
+
+      /* === MAIN PORTFOLIO COMPONENT === */
+
+      const SokoGenPortfolio = () => {
+        const [activeSection, setActiveSection] = useState("home");
+        const [selectedProject, setSelectedProject] = useState(null);
+        const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+        // Image paths (inside "Portfolio Photos" folder)
+        const PROFILE_IMAGE = "Portfolio Photos/profile-photo.jpg";
+        const ABOUT_IMAGES = [
+          "Portfolio Photos/about-1-motorcycle.jpg",
+          "Portfolio Photos/about-2-surf.jpg",
+          "Portfolio Photos/about-3-dunes.jpg",
+          "Portfolio Photos/about-4-ski.jpg",
+        ];
+
+        const projects = [
+          {
+            id: 1,
+            title: "Refrigerator Defense System",
+            category: "Design",
+            thumbnail:
+              "https://images.unsplash.com/photo-1585428248637-888f8d25d55a?w=800&q=80",
+            description:
+              "A personalized project designed to solve my pet peeve of people snooping and stealing from my refrigerator, used to ward off anyone who opens the door by means of electric shock.",
+            technologies: ["Arduino", "VS Code", "Fusion CAD"],
+            year: "2025",
+            longDescription:
+              "This project represents an innovative solution to a common household problem. Through careful engineering and design thinking, I developed a system that effectively deters unauthorized refrigerator access. The project involved extensive prototyping, circuit design, and 3D modeling to create a functional and safe deterrent system. Working with Arduino allowed for precise control and customization of the defense mechanism, while Fusion CAD enabled detailed design and planning of the physical components.",
+          },
+          {
+            id: 2,
+            title: "Project Beta",
+            category: "Development",
+            thumbnail:
+              "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&q=80",
+            description:
+              "An innovative web application that streamlines workflow and enhances productivity.",
+            technologies: ["Vue.js", "Node.js", "MongoDB"],
+            year: "2024",
+          },
+          {
+            id: 3,
+            title: "Project Gamma",
+            category: "Research",
+            thumbnail:
+              "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+            description:
+              "Research initiative exploring new paradigms in human-computer interaction.",
+            technologies: ["Python", "TensorFlow", "D3.js"],
+            year: "2023",
+          },
+          {
+            id: 4,
+            title: "Project Delta",
+            category: "Design",
+            thumbnail:
+              "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
+            description:
+              "Brand identity and visual system for a sustainable tech startup.",
+            technologies: ["Illustrator", "After Effects"],
+            year: "2023",
+          },
+        ];
+
+        const NavBar = () => (
+          <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-800/95 backdrop-blur-md border-b border-gray-700">
+            <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+              <button
+                onClick={() => {
+                  setActiveSection("home");
+                  setSelectedProject(null);
+                }}
+                className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent hover:opacity-80 transition-opacity cursor-pointer"
+              >
+                SokoGen
+              </button>
+
+              {/* Desktop nav */}
+              <div className="hidden md:flex items-center gap-8">
+                {["Home", "Projects", "About", "Contact"].map((item) => (
+                  <button
+                    key={item}
+                    onClick={() => {
+                      setActiveSection(item.toLowerCase());
+                      setSelectedProject(null);
+                    }}
+                    className={`text-sm font-medium transition-all ${
+                      activeSection === item.toLowerCase()
+                        ? "text-purple-500"
+                        : "text-gray-300 hover:text-white"
+                    }`}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+
+              {/* Mobile menu button */}
+              <button
+                className="md:hidden text-gray-300"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              >
+                {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
+
+            {mobileMenuOpen && (
+              <div className="md:hidden bg-gray-800 border-t border-gray-700">
+                <div className="px-6 py-4 flex flex-col gap-4">
+                  {["Home", "Projects", "About", "Contact"].map((item) => (
+                    <button
+                      key={item}
+                      onClick={() => {
+                        setActiveSection(item.toLowerCase());
+                        setSelectedProject(null);
+                        setMobileMenuOpen(false);
+                      }}
+                      className={`text-left text-sm font-medium transition-all ${
+                        activeSection === item.toLowerCase()
+                          ? "text-purple-500"
+                          : "text-gray-300"
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </nav>
+        );
+
+        const HomePage = () => (
+          <div className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden bg-gray-900">
+            <div className="absolute top-20 right-10 w-64 h-64 bg-gradient-to-br from-purple-600/20 to-violet-600/20 rounded-full blur-3xl animate-float" />
+            <div className="absolute bottom-20 left-10 w-96 h-96 bg-gradient-to-tr from-violet-600/10 to-purple-600/10 rounded-full blur-3xl animate-float-delayed" />
+
+            <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center relative z-10">
+              <div className="order-2 md:order-1 animate-fade-in-up">
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-violet-600 rounded-2xl blur opacity-25 group-hover:opacity-40 transition" />
+                  <img
+                    src={PROFILE_IMAGE}
+                    alt="Cyril Sokolov"
+                    className="relative rounded-2xl shadow-2xl w-full object-cover aspect-square"
+                  />
+                </div>
+              </div>
+
+              <div className="order-1 md:order-2 space-y-6 animate-fade-in-up animation-delay-200">
+                <div className="space-y-2">
+                  <h1 className="text-5xl md:text-6xl font-bold text-white leading-tight">
+                    Cyril Sokolov
+                  </h1>
+                  <div className="h-1 w-20 bg-gradient-to-r from-purple-600 to-violet-600 rounded-full" />
+                </div>
+
+                <p className="text-xl text-gray-300 leading-relaxed">
+                  Second-year Creative Technology and Design student at CU
+                  Boulder's Atlas Institute. Passionate about engineering,
+                  design innovation, and entrepreneurship—driven by curiosity
+                  and a commitment to continuous growth.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                  <button
+                    onClick={() => setActiveSection("projects")}
+                    className="px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 text-white rounded-xl font-medium shadow-lg shadow-purple-600/30 hover:shadow-xl hover:shadow-purple-600/40 hover:scale-105 transition-all"
+                  >
+                    View Projects
+                  </button>
+                  <button
+                    onClick={() => setActiveSection("about")}
+                    className="px-8 py-4 border-2 border-gray-600 text-gray-300 rounded-xl font-medium hover:border-purple-500 hover:text-purple-500 transition-all"
+                  >
+                    Learn More
+                  </button>
+                  <button
+                    onClick={() => setActiveSection("contact")}
+                    className="px-8 py-4 border-2 border-gray-600 text-gray-300 rounded-xl font-medium hover:border-violet-500 hover:text-violet-500 transition-all"
+                  >
+                    Get in Touch
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+        const ProjectsPage = () => {
+          if (selectedProject) {
+            const project = projects.find((p) => p.id === selectedProject);
+            return (
+              <div className="min-h-screen py-32 px-6 bg-gray-900">
+                <div className="max-w-4xl mx-auto">
+                  <button
+                    onClick={() => setSelectedProject(null)}
+                    className="mb-8 text-purple-500 hover:text-purple-400 font-medium flex items-center gap-2 transition-colors"
+                  >
+                    ← Back to Projects
+                  </button>
+
+                  <div className="space-y-8 animate-fade-in-up">
+                    <div>
+                      <div className="text-sm text-purple-500 font-medium mb-2">
+                        {project.category} • {project.year}
+                      </div>
+                      <h1 className="text-5xl font-bold text-white mb-4">
+                        {project.title}
+                      </h1>
+                      <div className="h-1 w-20 bg-gradient-to-r from-purple-600 to-violet-600 rounded-full" />
+                    </div>
+
+                    <img
+                      src={project.thumbnail}
+                      alt={project.title}
+                      className="w-full h-96 object-cover rounded-2xl shadow-2xl"
+                    />
+
+                    <div className="prose prose-lg max-w-none prose-invert">
+                      <p className="text-xl text-gray-300 leading-relaxed">
+                        {project.description}
+                      </p>
+
+                      <h3 className="text-2xl font-bold text-white mt-8 mb-4">
+                        Technologies Used
+                      </h3>
+                      <div className="flex flex-wrap gap-3">
+                        {project.technologies.map((tech, index) => (
+                          <span
+                            key={index}
+                            className="px-4 py-2 bg-gradient-to-r from-purple-900/40 to-violet-900/40 text-purple-300 border border-purple-600/30 rounded-lg text-sm font-medium"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+
+                      <h3 className="text-2xl font-bold text-white mt-8 mb-4">
+                        Project Overview
+                      </h3>
+                      <p className="text-gray-300">
+                        {project.longDescription ||
+                          `This project represents a significant milestone in my portfolio,
+                          demonstrating expertise in design thinking, technical implementation,
+                          and creative problem-solving. Through careful research and iterative
+                          development, I crafted a solution that not only meets functional
+                          requirements but also delivers an exceptional user experience.`}
+                      </p>
+
+                      {!project.longDescription && (
+                        <p className="text-gray-300">
+                          The project involved extensive collaboration, prototyping,
+                          and refinement to ensure every detail aligned with the vision.
+                          From initial concept to final delivery, each phase was
+                          approached with dedication to quality and innovation.
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+
+          return (
+            <div className="min-h-screen py-32 px-6 bg-gray-900">
+              <div className="max-w-7xl mx-auto">
+                <div className="text-center mb-16 animate-fade-in-up">
+                  <h1 className="text-5xl font-bold text-white mb-4">
+                    Projects
+                  </h1>
+                  <div className="h-1 w-20 bg-gradient-to-r from-purple-600 to-violet-600 rounded-full mx-auto mb-6" />
+                  <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+                    A collection of work showcasing creativity, technical skill,
+                    and innovative thinking.
+                  </p>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-8">
+                  {projects.map((project, index) => (
+                    <div
+                      key={project.id}
+                      className="group cursor-pointer animate-fade-in-up"
+                      style={{ animationDelay: `${index * 100}ms` }}
+                      onClick={() => setSelectedProject(project.id)}
+                    >
+                      <div className="relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity z-10" />
+                        <img
+                          src={project.thumbnail}
+                          alt={project.title}
+                          className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                        <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
+                          <div className="text-purple-400 text-sm font-medium mb-2">
+                            {project.category}
+                          </div>
+                          <h3 className="text-2xl font-bold text-white mb-2">
+                            {project.title}
+                          </h3>
+                          <p className="text-gray-200 text-sm line-clamp-2">
+                            {project.description}
+                          </p>
+                          <div className="mt-4 flex items-center gap-2 text-white group-hover:gap-3 transition-all">
+                            <span className="text-sm font-medium">
+                              View Project
+                            </span>
+                            <ExternalLink size={16} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        };
+
+        const AboutPage = () => (
+          <div className="min-h-screen py-32 px-6 bg-gray-900">
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-16 animate-fade-in-up">
+                <h1 className="text-5xl font-bold text-white mb-4">
+                  About Me
+                </h1>
+                <div className="h-1 w-20 bg-gradient-to-r from-purple-600 to-violet-600 rounded-full mx-auto" />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6 mb-16 animate-fade-in-up animation-delay-200">
+                {ABOUT_IMAGES.map((img, index) => (
+                  <div key={index} className="relative group">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-violet-600 rounded-xl blur opacity-20 group-hover:opacity-30 transition" />
+                    <img
+                      src={img}
+                      alt={`About ${index + 1}`}
+                      className="relative w-full h-80 object-cover rounded-xl shadow-lg"
+                    />
+                  </div>
+                ))}
+              </div>
+
+              <div className="max-w-3xl mx-auto space-y-8 animate-fade-in-up animation-delay-400">
+                <div className="prose prose-lg max-w-none prose-invert">
+                  <h2 className="text-3xl font-bold text-white mb-4">
+                    My Story
+                  </h2>
+                  <p className="text-gray-300 leading-relaxed">
+                    As a current second-year student at the University of
+                    Colorado Boulder, I am studying Creative Technology and
+                    Design in the Atlas Institute of Engineering. I am
+                    interested in developing my skill set and experience in the
+                    field of engineering, and I am also interested in business
+                    entrepreneurship.
+                  </p>
+                  <p className="text-gray-300 leading-relaxed">
+                    Much of my work so far has been prototyping and learning
+                    the interactive aspects of the design process through my
+                    coursework and projects. Outside of school, I am interested
+                    in weightlifting, motorcycling, snowboarding, and I am
+                    involved in a fraternity. I am driven by curiosity and I
+                    always want to learn more and better myself.
+                  </p>
+                </div>
+
+                <div className="flex justify-center">
+                  <a
+                    href="Cyril_Sokolov_Resume.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 text-white rounded-xl font-medium shadow-lg shadow-purple-600/30 hover:shadow-xl hover:shadow-purple-600/40 hover:scale-105 transition-all"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                      ></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                      <line x1="16" y1="13" x2="8" y2="13"></line>
+                      <line x1="16" y1="17" x2="8" y2="17"></line>
+                      <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    View Resume
+                  </a>
+                </div>
+
+                <div>
+                  <h3 className="text-2xl font-bold text-white mb-6">
+                    What I Do
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {[
+                      {
+                        title: "Creative Technology & Design",
+                        desc: "Developing skills in prototyping and interactive design processes",
+                      },
+                      {
+                        title: "Engineering Innovation",
+                        desc: "Building technical expertise through coursework and hands-on projects",
+                      },
+                      {
+                        title: "Entrepreneurship",
+                        desc: "Exploring business opportunities and innovative solutions",
+                      },
+                      {
+                        title: "Personal Growth",
+                        desc: "Weightlifting, motorcycling, snowboarding, and continuous learning",
+                      },
+                    ].map((item, index) => (
+                      <div
+                        key={index}
+                        className="p-6 bg-gradient-to-br from-gray-800 to-gray-700 border border-gray-600 rounded-xl hover:shadow-lg hover:border-purple-500/50 transition-all"
+                      >
+                        <h4 className="text-lg font-semibold text-white mb-2">
+                          {item.title}
+                        </h4>
+                        <p className="text-gray-300 text-sm">{item.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+        const ContactPage = () => (
+          <div className="min-h-screen flex items-center justify-center px-6 bg-gray-900">
+            <div className="max-w-4xl mx-auto w-full">
+              <div className="text-center mb-12 animate-fade-in-up">
+                <h1 className="text-5xl font-bold text-white mb-4">
+                  Get in Touch
+                </h1>
+                <div className="h-1 w-20 bg-gradient-to-r from-purple-600 to-violet-600 rounded-full mx-auto mb-6" />
+                <p className="text-xl text-gray-300">
+                  I'm always eager to connect and explore new opportunities.
+                  Whether it's about projects, collaborations, or just to chat—
+                  feel free to reach out.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="space-y-6 animate-fade-in-up animation-delay-200">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                      placeholder="Your name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                      placeholder="your.email@example.com"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Message
+                    </label>
+                    <textarea
+                      rows="6"
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-600 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
+                      placeholder="Your message..."
+                    />
+                  </div>
+                  <button className="w-full px-8 py-4 bg-gradient-to-r from-purple-600 to-violet-600 text-white rounded-xl font-medium shadow-lg shadow-purple-600/30 hover:shadow-xl hover:shadow-purple-600/40 hover:scale-[1.02] transition-all">
+                    Send Message
+                  </button>
+                </div>
+
+                <div className="space-y-6 animate-fade-in-up animation-delay-400">
+                  <div className="p-8 bg-gradient-to-br from-gray-800 to-gray-700 border border-gray-600 rounded-2xl space-y-6">
+                    <div>
+                      <h3 className="text-xl font-bold text-white mb-4">
+                        Connect With Me
+                      </h3>
+                      <p className="text-gray-300 text-sm">
+                        Feel free to reach out through any of these channels.
+                        I'm always open to discussing new projects,
+                        opportunities, and ideas.
+                      </p>
+                    </div>
+
+                    <div className="space-y-4">
+                      <a
+                        href="mailto:cysokolov@gmail.com"
+                        className="flex items-center gap-3 text-gray-300 hover:text-purple-400 transition-colors group"
+                      >
+                        <div className="p-3 bg-purple-900/30 rounded-lg group-hover:bg-purple-600/30 transition-colors">
+                          <Mail size={20} />
+                        </div>
+                        <span className="font-medium">
+                          cysokolov@gmail.com
+                        </span>
+                      </a>
+
+                      <a
+                        href="https://linkedin.com/in/cyril-sokolov"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-3 text-gray-300 hover:text-purple-400 transition-colors group"
+                      >
+                        <div className="p-3 bg-purple-900/30 rounded-lg group-hover:bg-purple-600/30 transition-colors">
+                          <Linkedin size={20} />
+                        </div>
+                        <span className="font-medium">Connect on LinkedIn</span>
+                      </a>
+
+                      <a
+                        href="tel:720-366-2306"
+                        className="flex items-center gap-3 text-gray-300 hover:text-purple-400 transition-colors group"
+                      >
+                        <div className="p-3 bg-purple-900/30 rounded-lg group-hover:bg-purple-600/30 transition-colors">
+                          <Phone size={20} />
+                        </div>
+                        <span className="font-medium">720-366-2306</span>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="p-8 bg-gradient-to-br from-purple-600 to-violet-600 rounded-2xl text-white shadow-lg shadow-purple-600/20">
+                    <h3 className="text-xl font-bold mb-2">SokoGen</h3>
+                    <p className="text-purple-100 text-sm">
+                      Building the future, one project at a time.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+        const App = () => (
+          <div className="min-h-screen bg-gray-900 font-sans text-white">
+            <style>{`
+              @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Syne:wght@700;800&display=swap');
+
+              * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+              }
+
+              body {
+                font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+                background-color: #111827;
+              }
+
+              h1, h2, h3, h4, h5, h6 {
+                font-family: 'Syne', sans-serif;
+              }
+
+              @keyframes float {
+                0%, 100% { transform: translateY(0px) rotate(0deg); }
+                50% { transform: translateY(-20px) rotate(5deg); }
+              }
+
+              @keyframes float-delayed {
+                0%, 100% { transform: translateY(0px) rotate(0deg); }
+                50% { transform: translateY(-30px) rotate(-5deg); }
+              }
+
+              @keyframes fade-in-up {
+                from {
+                  opacity: 0;
+                  transform: translateY(30px);
+                }
+                to {
+                  opacity: 1;
+                  transform: translateY(0);
+                }
+              }
+
+              .animate-float {
+                animation: float 8s ease-in-out infinite;
+              }
+
+              .animate-float-delayed {
+                animation: float-delayed 10s ease-in-out infinite;
+              }
+
+              .animate-fade-in-up {
+                animation: fade-in-up 0.8s ease-out forwards;
+              }
+
+              .animation-delay-200 {
+                animation-delay: 0.2s;
+                opacity: 0;
+              }
+
+              .animation-delay-400 {
+                animation-delay: 0.4s;
+                opacity: 0;
+              }
+
+              .line-clamp-2 {
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+              }
+            `}</style>
+
+            <NavBar />
+
+            {activeSection === "home" && <HomePage />}
+            {activeSection === "projects" && <ProjectsPage />}
+            {activeSection === "about" && <AboutPage />}
+            {activeSection === "contact" && <ContactPage />}
+          </div>
+        );
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<App />);
     </script>
   </body>
 </html>
